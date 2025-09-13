@@ -98,11 +98,6 @@ const HeroSection: FC = () => {
       id="hero"
       className="relative min-h-full overflow-hidden z-10 mt-16"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-yellow-50 via-white to-white z-0"></div>
-
-      <div className="absolute top-1/4 -right-40 w-72 sm:w-96 h-72 sm:h-96 bg-yellow-200 rounded-full filter blur-3xl opacity-40"></div>
-      <div className="absolute bottom-1/3 -left-40 w-60 sm:w-80 h-60 sm:h-80 bg-amber-200 rounded-full filter blur-3xl opacity-40"></div>
-
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 sm:space-y-6">
