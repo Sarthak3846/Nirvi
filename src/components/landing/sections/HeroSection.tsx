@@ -45,7 +45,7 @@ const TypeWriter: FC<TypeWriterProps> = ({ text, className }) => {
   return (
     <span className={className}>
       {beforeGradient}
-      <span className="bg-gradient-to-r from-yellow-500 to-amber-500 text-transparent bg-clip-text">
+      <span className="bg-gradient-to-r from-black to-black text-transparent bg-clip-text">
         {gradientText}
       </span>
     </span>
@@ -73,7 +73,7 @@ const FloatingElement: FC<FloatingElementProps> = ({ children, delay = 0, durati
 
 const ResumePreview: FC = () => {
   return (
-    <div className="relative w-full max-w-xl h-84 sm:h-80 md:h-116 rounded-2xl overflow-hidden shadow-2xl shadow-yellow-500/20 border-2 border-yellow-500/30 mx-auto">
+    <div className="relative w-full max-w-xl h-84 sm:h-80 md:h-116 overflow-hidden shadow-2xl shadow-yellow-500/20 border-2 border-yellow-500/30 mx-auto rounded-2xl">
       <Image
         src="/homepage.jpeg"
         alt="Nirvi homepage preview"

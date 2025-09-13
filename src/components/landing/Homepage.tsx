@@ -10,6 +10,7 @@ import Image from 'next/image';
 import HeroSection from './sections/HeroSection';
 import VideoSection from './sections/VideoSection';
 import FeaturesSection from './sections/FeaturesSection';
+import Footer from './Footer';
 
 interface TypeWriterProps {
   text: string;
@@ -232,6 +233,7 @@ const HomePage: FC = () => {
         </svg>
       </motion.button>
       </div>
+      <Footer />
     </div>
   );
 };
