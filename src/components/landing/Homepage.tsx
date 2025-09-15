@@ -1,21 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef, FC, JSX } from 'react';
-import { motion, useSpring, useScroll, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, FC } from 'react';
+import { motion, useSpring, useScroll } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Howitwork from './Howitwork';
-import Navigation from './Navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import HeroSection from './sections/HeroSection';
 import VideoSection from './sections/VideoSection';
 import FeaturesSection from './sections/FeaturesSection';
 import Footer from './Footer';
-
-interface TypeWriterProps {
-  text: string;
-  className?: string;
-}
+import Navigation from './Navigation';
 
 interface MobileNavProps {
   activeSection: string;
