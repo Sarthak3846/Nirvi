@@ -140,10 +140,10 @@ const HeroSection: FC = () => {
               className="flex flex-col sm:flex-row gap-3"
             >
               <Link
-                href="/contact"
+                href="/login"
                 className="relative overflow-hidden px-6 py-3 rounded-lg border border-yellow-300 bg-gradient-to-r from-yellow-500 to-amber-500 text-white font-medium hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-300 flex items-center justify-center group"
               >
-                <span className="relative z-10">Get in Touch</span>
+                <span className="relative z-10">Login / Signup</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-600 to-amber-600 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
               </Link>
               <Link
