@@ -85,7 +85,7 @@ const HeroSection: FC = () => {
       className="relative min-h-full overflow-hidden z-10 mt-16"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center pt-5">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-4 sm:space-y-6">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -157,21 +157,21 @@ const HeroSection: FC = () => {
           </div>
 
           <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.5 }}
-    className="flex items-center justify-center h-full"
-  >
-    <div className="relative w-full max-w-xl h-[400px] sm:h-[500px] overflow-hidden shadow-2xl shadow-yellow-500/20 border-2 border-yellow-500/30 rounded-2xl flex items-center justify-center">
-      <Image
-        src="/homepage.jpeg"
-        alt="Nirvi homepage preview"
-        fill
-        style={{ objectFit: 'cover' }}
-        priority
-      />
-    </div>
-  </motion.div>
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex items-center justify-center h-full"
+          >
+            <div className="relative w-full max-w-xl h-[400px] sm:h-[500px] overflow-hidden shadow-2xl shadow-yellow-500/20 border-2 border-yellow-500/30 rounded-2xl flex items-center justify-center">
+              <Image
+                src="/homepage.jpeg"
+                alt="Nirvi homepage preview"
+                fill
+                style={{ objectFit: 'cover' }}
+                priority
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
 
