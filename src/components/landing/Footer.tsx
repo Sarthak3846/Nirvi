@@ -4,7 +4,6 @@ import React from "react";
 import { motion } from 'framer-motion';
 import { Instagram, Facebook, Menu, X, Linkedin } from 'lucide-react';
 import { useState } from 'react';
-import Image from 'next/image';
 
 const Footer: React.FC = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -64,15 +63,7 @@ const Footer: React.FC = () => {
         <div className="">
         <div className="mb-8">
           <div className="mb-3">
-            <Image
-              src="/nirvi_logo.jpeg"
-              alt="Nirvi"
-              width={140}
-              height={40}
-              className="h-10 w-auto object-contain"
-              priority
-            />
-            <span className="sr-only">Nirvi</span>
+            <span className="text-lg font-bold text-gray-700 opacity-80 tracking-tight">Nirvi</span>
           </div>
           <p className="text-gray-400 text-sm md:text-base mb-4">
             Fashion as a force for change through sustainable development.
