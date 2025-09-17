@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/repositories/users';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import DashboardOverview from '@/components/dashboard/DashboardOverview';
 
 export default function DashboardPage() {
 	const router = useRouter();
@@ -41,51 +43,50 @@ export default function DashboardPage() {
 
 	if (loading) {
 		return (
-			<div style={{ maxWidth: 720, margin: '4rem auto', padding: 16 }}>
-				<p>Loading...</p>
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+				<div className="text-center">
+					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+					<p className="mt-4 text-gray-600">Loading...</p>
+				</div>
 			</div>
 		);
 	}
 
 	if (error) {
 		return (
-			<div style={{ maxWidth: 720, margin: '4rem auto', padding: 16 }}>
-				<p style={{ color: '#ef4444' }}>{error}</p>
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+				<div className="text-center">
+					<div className="bg-red-50 border border-red-200 rounded-md p-4">
+						<p className="text-red-600">{error}</p>
+						<button
+							onClick={() => window.location.reload()}
+							className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+						>
+							Retry
+						</button>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
+	if (!user) {
+		return null;
+	}
+
 	return (
-		<div style={{ maxWidth: 720, margin: '4rem auto', padding: 16 }}>
-			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-				<h1>Dashboard</h1>
-				<button
-					onClick={handleLogout}
-					style={{
-						background: '#ef4444',
-						color: '#ffffff',
-						border: 'none',
-						borderRadius: 8,
-						padding: '8px 16px',
-						cursor: 'pointer'
-					}}
-				>
-					Logout
-				</button>
+		<DashboardLayout user={user} onLogout={handleLogout}>
+			<div>
+				<div className="mb-8">
+					<h1 className="text-2xl font-bold text-gray-900">Welcome back, {user.name || 'User'}!</h1>
+					<p className="mt-1 text-sm text-gray-500">
+						Here&apos;s what&apos;s happening with your account today.
+					</p>
+				</div>
+
+				<DashboardOverview userId={user.id} />
 			</div>
-			
-			<div style={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-				<h2 style={{ margin: '0 0 12px 0' }}>Welcome back!</h2>
-				{user && (
-					<div>
-						<p><strong>Email:</strong> {user.email}</p>
-						<p><strong>Name:</strong> {user.name || 'Not provided'}</p>
-						<p><strong>Role:</strong> {user.role}</p>
-						<p><strong>User ID:</strong> {user.id}</p>
-					</div>
-				)}
-			</div>
-		</div>
+		</DashboardLayout>
 	);
 }
 
