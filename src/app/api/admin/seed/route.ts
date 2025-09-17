@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createCategory, createProduct } from '@/repositories/products';
 
-export async function POST(req: NextRequest) {
+export async function POST() {
 	try {
 		// Create sample categories
 		const categories = [

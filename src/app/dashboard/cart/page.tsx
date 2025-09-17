@@ -66,7 +66,7 @@ export default function CartPage() {
 			});
 
 			if (res.ok) {
-				const updatedCart = await res.json();
+				const updatedCart = await res.json() as CartWithItems;
 				setCart(updatedCart);
 			} else {
 				console.error('Failed to update quantity');
@@ -86,7 +86,7 @@ export default function CartPage() {
 			});
 
 			if (res.ok) {
-				const updatedCart = await res.json();
+				const updatedCart = await res.json() as CartWithItems;
 				setCart(updatedCart);
 			} else {
 				console.error('Failed to remove item');

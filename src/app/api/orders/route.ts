@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const body = await req.json();
+		const body = await req.json() as { shipping_address_id?: string };
 		const { shipping_address_id } = body;
 
 		// Get active cart

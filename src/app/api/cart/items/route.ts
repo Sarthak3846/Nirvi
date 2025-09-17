@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const body = await req.json();
+		const body = await req.json() as { product_id?: string; quantity?: number };
 		const { product_id, quantity } = body;
 
 		if (!product_id || !quantity || quantity <= 0) {
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Failed to create cart' }, { status: 500 });
 		}
 
-		const cartItem = await addItemToCart(cart.id, product_id, quantity);
+		await addItemToCart(cart.id, product_id, quantity);
 		
 		// Return updated cart
 		const updatedCart = await getActiveCartByUserId(userId);

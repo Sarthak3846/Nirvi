@@ -23,7 +23,17 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const body = await req.json();
+		const body = await req.json() as {
+			full_name?: string;
+			address_line1?: string;
+			address_line2?: string;
+			city?: string;
+			state?: string;
+			postal_code?: string;
+			country?: string;
+			phone?: string;
+			is_default?: boolean;
+		};
 		const { full_name, address_line1, address_line2, city, state, postal_code, country, phone, is_default } = body;
 
 		if (!full_name || !address_line1 || !city || !postal_code || !country) {

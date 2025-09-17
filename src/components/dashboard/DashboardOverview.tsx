@@ -22,12 +22,12 @@ export default function DashboardOverview({ userId }: DashboardOverviewProps) {
 				]);
 
 				if (ordersRes.ok) {
-					const ordersData = await ordersRes.json();
+					const ordersData = await ordersRes.json() as OrderWithItems[];
 					setOrders(ordersData);
 				}
 
 				if (cartRes.ok) {
-					const cartData = await cartRes.json();
+					const cartData = await cartRes.json() as CartWithItems;
 					setCart(cartData);
 				}
 			} catch (error) {

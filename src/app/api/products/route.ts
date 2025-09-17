@@ -13,7 +13,13 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
 	try {
-		const body = await req.json();
+		const body = await req.json() as {
+			name?: string;
+			description?: string;
+			price?: number;
+			stock?: number;
+			category_id?: string;
+		};
 		const { name, description, price, stock, category_id } = body;
 
 		if (!name || !price || stock === undefined) {
