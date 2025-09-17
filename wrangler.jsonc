@@ -31,11 +31,10 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
 	"vars": {
-		"GOOGLE_CLIENT_ID": "REDACTED",
-		"GOOGLE_CLIENT_SECRET": "REDACTED",
-		"GOOGLE_REDIRECT_URI": "https://nirvi.adityaagrwal3005.workers.dev/api/auth/google/callback",
-		"NEXT_PUBLIC_GOOGLE_CLIENT_ID": "REDACTED",
-		"NEXT_PUBLIC_GOOGLE_CLIENT_SECRET": "REDACTED"
+		// Note: Do NOT commit secrets here. Use `wrangler secret put` for production
+		// and `.dev.vars` for local development. See `.dev.vars.example`.
+		// Non-sensitive values like fixed URLs may remain here if desired.
+		"GOOGLE_REDIRECT_URI": "https://nirvi.adityaagrwal3005.workers.dev/api/auth/google/callback"
 	}
 
 	/**
