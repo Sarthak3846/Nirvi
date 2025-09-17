@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OAuth2Client } from 'google-auth-library';
+import { verifyGoogleIdToken } from '@/lib/googleVerify';
 import { createSession } from '@/lib/session';
 import { createUser, findUserByEmail } from '@/repositories/users';
 import { createOAuthProvider, getAuthProviderByProviderId } from '@/repositories/authProviders';
 
-function getClient(): OAuth2Client {
+function getClientId(): string {
     const clientId = process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-    if (!clientId || !clientSecret) throw new Error('Missing GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET');
-    return new OAuth2Client(clientId, clientSecret);
+    if (!clientId) throw new Error('Missing GOOGLE_CLIENT_ID');
+    return clientId;
 }
 
 export async function GET(req: NextRequest) {
@@ -21,7 +20,7 @@ export async function GET(req: NextRequest) {
         if (!state || !stateCookie || state !== stateCookie) return NextResponse.json({ error: 'invalid_state' }, { status: 400 });
 
         const redirectUri = `${url.origin}/api/auth/google/callback`;
-        const client = getClient();
+        const clientId = getClientId();
 
         const tokenParams = new URLSearchParams({
             code,
@@ -43,8 +42,7 @@ export async function GET(req: NextRequest) {
         const idToken = tokenJson.id_token;
         if (!idToken) return NextResponse.json({ error: 'missing_id_token' }, { status: 400 });
 
-        const ticket = await client.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID });
-        const payload = (ticket.getPayload() ?? {}) as { sub?: string; email?: string; name?: string };
+        const payload = await verifyGoogleIdToken(idToken, clientId);
         const sub = payload.sub;
         const email = payload.email;
         const name = payload.name;

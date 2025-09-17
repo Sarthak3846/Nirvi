@@ -1,19 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OAuth2Client } from 'google-auth-library';
+import { verifyGoogleIdToken } from '@/lib/googleVerify';
 import { createSession } from '@/lib/session';
 import { createUser, findUserByEmail } from '@/repositories/users';
 import { createOAuthProvider, getAuthProviderByProviderId } from '@/repositories/authProviders';
 
-type GoogleTokenPayload = {
-	iss?: string;
-	azp?: string;
-	aud?: string;
-	sub?: string;
-	email?: string;
-	email_verified?: boolean;
-	name?: string;
-	picture?: string;
-};
+// Removed legacy GoogleTokenPayload; use payload from verifyGoogleIdToken instead
 
 function getGoogleClientId(): string {
     const fromProcess = process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -31,9 +22,7 @@ export async function POST(req: NextRequest) {
             return Response.json({ error: 'id_token required' }, { status: 400 });
         }
 
-        const client = new OAuth2Client(getGoogleClientId());
-        const ticket = await client.verifyIdToken({ idToken: id_token, audience: getGoogleClientId() });
-        const payload = (ticket.getPayload() ?? {}) as GoogleTokenPayload;
+        const payload = await verifyGoogleIdToken(id_token, getGoogleClientId());
 
         const googleSub = payload.sub;
         const email = payload.email;

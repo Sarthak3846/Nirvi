@@ -1,10 +1,4 @@
-declare module 'google-auth-library' {
-  export class OAuth2Client {
-    constructor(clientId?: string, clientSecret?: string, redirectUri?: string);
-    verifyIdToken(input: { idToken: string; audience?: string | string[] }): Promise<{ getPayload(): Record<string, unknown> | undefined }>;
-    getToken(codeOrOptions: string | { code: string; redirect_uri?: string }): Promise<{ tokens: { id_token?: string } }>;    
-  }
-}
+// Intentionally left blank: previously provided ambient types for 'google-auth-library'
 
 declare global {
   interface Window {
