@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import GoogleAuthButton from '@/components/GoogleAuthButton';
 
 export default function SignupPage() {
 	const router = useRouter();
@@ -86,6 +87,14 @@ export default function SignupPage() {
 								Create account
 							</button>
 						</form>
+
+					<div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, marginBottom: 8 }}>
+						<div style={{ flex: 1, height: 1, backgroundColor: '#e5e7eb' }} />
+						<span style={{ color: '#9ca3af', fontSize: 12 }}>or</span>
+						<div style={{ flex: 1, height: 1, backgroundColor: '#e5e7eb' }} />
+					</div>
+
+					<GoogleAuthButton label="Continue with Google" />
 
 						<p style={{ marginTop: 16, color: '#6b7280' }}>
 							Have an account?

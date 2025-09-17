@@ -29,6 +29,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Expose Google Client ID to the browser at runtime */}
+        {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+          <>
+            <meta name="google-client-id" content={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.GOOGLE_CLIENT_ID = ${JSON.stringify(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)};`,
+              }}
+            />
+          </>
+        ) : null}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
