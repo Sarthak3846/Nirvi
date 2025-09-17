@@ -5,7 +5,6 @@ import { motion, useSpring, useScroll } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Howitwork from './Howitwork';
 import Link from 'next/link';
-import Image from 'next/image';
 import HeroSection from './sections/HeroSection';
 import VideoSection from './sections/VideoSection';
 import FeaturesSection from './sections/FeaturesSection';
@@ -118,7 +117,6 @@ const HomePage: FC = () => {
   // Refs for sections (not strictly needed now)
   const heroRef = useRef<HTMLElement>(null);
   const featuresRef = useRef<HTMLElement>(null);
-  const testimonialsRef = useRef<HTMLElement>(null);
   const howItWorksRef = useRef<HTMLElement>(null);
 
   // Scroll tracking implementation
