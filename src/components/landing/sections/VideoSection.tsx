@@ -1,70 +1,8 @@
 "use client";
 
-import React, { FC, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import React, { FC } from 'react';
+import { motion } from 'framer-motion';
 
-const YouTubePlayer: FC<{ videoId: string }> = ({ videoId }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-  const videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&controls=0`;
-
-  return (
-    <div className="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl shadow-yellow-500/20 border-2 border-yellow-500/30 relative">
-      <AnimatePresence>
-        {isPlaying ? (
-          <motion.div
-            key="video"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full h-full"
-          >
-            <iframe
-              className="w-full h-full"
-              src={videoUrl}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="thumbnail"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full h-full cursor-pointer group"
-            onClick={() => setIsPlaying(true)}
-          >
-            <Image
-              src={thumbnailUrl}
-              alt="Video thumbnail"
-              fill
-              style={{ objectFit: 'cover' }}
-              className="transition-transform duration-500 group-hover:scale-105"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                className="w-20 h-20 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-white"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <svg className="w-10 h-10 text-yellow-600" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
 
 const VideoSection: FC = () => {
   return (

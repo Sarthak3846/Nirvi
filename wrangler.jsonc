@@ -18,6 +18,14 @@
 	"observability": {
 		"enabled": true
 	}
+	,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "nirvi",
+			"database_id": "1039998c-24b2-4ce1-9af3-3b136470d443"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
