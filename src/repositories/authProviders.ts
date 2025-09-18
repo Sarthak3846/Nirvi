@@ -31,3 +31,22 @@ export async function getPasswordAuthByEmail(email: string): Promise<{ user_id: 
 		.first<{ user_id: string; password_hash: string }>();
 	return row ?? null;
 }
+
+export async function getAuthProviderByProviderId(provider: string, providerId: string): Promise<AuthProvider | null> {
+    const db = getDb();
+    const row = await db
+        .prepare(
+            `SELECT * FROM user_auth_providers WHERE provider = ? AND provider_id = ?`
+        )
+        .bind(provider, providerId)
+        .first<AuthProvider>();
+    return row ?? null;
+}
+
+export async function createOAuthProvider(userId: string, provider: string, providerId: string): Promise<void> {
+    const db = getDb();
+    await db
+        .prepare('INSERT INTO user_auth_providers (id, user_id, provider, provider_id, password_hash) VALUES (?, ?, ?, ?, NULL)')
+        .bind(crypto.randomUUID(), userId, provider, providerId)
+        .run();
+}
