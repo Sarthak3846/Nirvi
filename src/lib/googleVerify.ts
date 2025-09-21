@@ -8,8 +8,20 @@ export type GoogleIdTokenPayload = JWTPayload & {
 	picture?: string;
 };
 
+// JWKS response type
+interface GoogleJWKS {
+  keys: Array<{
+    kid: string;
+    kty: string;
+    use: string;
+    n: string;
+    e: string;
+    alg: string;
+  }>;
+}
+
 // Cache for Google's JWKS to avoid repeated fetches
-let cachedJwks: any = null;
+let cachedJwks: GoogleJWKS | null = null;
 let cacheExpiry = 0;
 
 async function getGoogleJWKS() {
@@ -26,7 +38,7 @@ async function getGoogleJWKS() {
 		throw new Error(`Failed to fetch Google JWKS: ${response.status}`);
 	}
 	
-	const jwks = await response.json();
+	const jwks = await response.json() as GoogleJWKS;
 	cachedJwks = jwks;
 	cacheExpiry = now + (60 * 60 * 1000); // Cache for 1 hour
 	
@@ -35,7 +47,7 @@ async function getGoogleJWKS() {
 
 async function getKeyFromJWKS(kid: string) {
 	const jwks = await getGoogleJWKS();
-	const key = jwks.keys.find((k: any) => k.kid === kid);
+	const key = jwks.keys.find((k) => k.kid === kid);
 	if (!key) {
 		throw new Error(`Unable to find key with kid: ${kid}`);
 	}

@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
         const existingProvider = await getAuthProviderByProviderId('google', sub);
         if (existingProvider) {
             const session = await createSession(existingProvider.user_id);
-            const resp = NextResponse.redirect(new URL('/dashboard', url.origin));
+            const resp = NextResponse.redirect(new URL(`/${existingProvider.user_id}`, url.origin));
             resp.cookies.set('session_token', session.token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -75,7 +75,7 @@ export async function GET(req: NextRequest) {
         await createOAuthProvider(userId, 'google', sub);
 
         const session = await createSession(userId);
-        const resp = NextResponse.redirect(new URL('/dashboard', url.origin));
+        const resp = NextResponse.redirect(new URL(`/${userId}`, url.origin));
         resp.cookies.set('session_token', session.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
