@@ -132,7 +132,12 @@ export default function Header({ cartItemCount = 0, onCartClick, onSearchSubmit,
               size="icon"
               onClick={() => {
                 if (user) {
-                  router.push(`/${user.id}`);
+                  // Redirect admins to admin panel instead of user profile
+                  if (user.role === 'admin') {
+                    router.push('/admin');
+                  } else {
+                    router.push(`/${user.id}`);
+                  }
                 } else {
                   onLoginClick?.();
                 }

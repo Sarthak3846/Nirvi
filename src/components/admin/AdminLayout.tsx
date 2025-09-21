@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../providers/AuthProvider';
 
 interface AdminLayoutProps {
@@ -10,6 +11,16 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
 	const { user, logout } = useAuth();
+	const router = useRouter();
+
+	const handleLogout = async () => {
+		try {
+			await logout();
+			router.push('/');
+		} catch (error) {
+			console.error('Logout failed:', error);
+		}
+	};
 
 	return (
 		<div className="min-h-screen bg-gray-50">
@@ -31,7 +42,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 								Welcome, {user?.name || user?.email}
 							</span>
 							<button
-								onClick={logout}
+								onClick={handleLogout}
 								className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
 							>
 								Logout

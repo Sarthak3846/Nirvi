@@ -41,10 +41,15 @@ const HomePage: FC = () => {
   };
 
   const handleLoginSuccess = () => {
-    // Wait for auth state to update, then redirect to user profile
+    // Wait for auth state to update, then redirect appropriately
     setTimeout(() => {
       if (user) {
-        router.push(`/${user.id}`);
+        // Redirect admins to admin panel instead of user profile
+        if (user.role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push(`/${user.id}`);
+        }
       } else {
         // If user state hasn't updated yet, refresh the page
         window.location.reload();

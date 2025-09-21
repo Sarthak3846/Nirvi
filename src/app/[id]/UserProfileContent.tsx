@@ -24,6 +24,12 @@ export default function UserProfileContent({ userId }: UserProfileContentProps) 
         return;
       }
       
+      // Redirect admins to admin panel instead of user profile
+      if (user.role === 'admin') {
+        router.push('/admin');
+        return;
+      }
+      
       // Check if the user ID matches the URL parameter
       if (user.id !== userId) {
         router.push('/');

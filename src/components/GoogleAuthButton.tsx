@@ -47,11 +47,16 @@ export function GoogleAuthButton() {
                         body: JSON.stringify({ id_token: idToken })
                     });
                     if (res.ok) {
-                        // Get user data to redirect to their profile
+                        // Get user data to redirect appropriately
                         const userRes = await fetch('/api/auth/me');
                         if (userRes.ok) {
-                            const userData = await userRes.json() as { id: string; email: string; name?: string };
-                            router.push(`/${userData.id}`);
+                            const userData = await userRes.json() as { id: string; email: string; name?: string; role: string };
+                            // Redirect admins to admin panel instead of user profile
+                            if (userData.role === 'admin') {
+                                router.push('/admin');
+                            } else {
+                                router.push(`/${userData.id}`);
+                            }
                         } else {
                             router.push('/');
                         }
