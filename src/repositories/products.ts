@@ -158,3 +158,21 @@ export async function createCategory(category: {
 	if (!created) throw new Error('Failed to create category');
 	return created;
 }
+
+export async function getAllProductsForAdmin(): Promise<ProductWithCategory[]> {
+	const db = getDb();
+	const stmt = db.prepare(`
+		SELECT p.*, pc.name as category_name
+		FROM products p
+		LEFT JOIN product_categories pc ON p.category_id = pc.id
+		ORDER BY p.created_at DESC
+	`);
+	const rows = await stmt.all<ProductWithCategory>();
+	return rows.results || [];
+}
+
+export async function deleteProduct(id: string): Promise<boolean> {
+	const db = getDb();
+	const result = await db.prepare('UPDATE products SET is_active = 0 WHERE id = ?').bind(id).run();
+	return result.success;
+}

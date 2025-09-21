@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, ShoppingBag, Menu, X, User } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '../providers/AuthProvider';
@@ -111,6 +111,20 @@ export default function Header({ cartItemCount = 0, onCartClick, onSearchSubmit,
             >
               <Search className="h-5 w-5" />
             </Button>
+
+            {/* Admin Panel (only for admin users) */}
+            {user?.role === 'admin' && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => router.push('/admin')}
+                className="hover:bg-transparent"
+                data-testid="button-admin"
+                title="Admin Panel"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+            )}
 
             {/* Login/Account */}
             <Button

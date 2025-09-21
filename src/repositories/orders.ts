@@ -180,3 +180,62 @@ export async function updateOrderStatus(orderId: string, status: string): Promis
 	const updated = await db.prepare('SELECT * FROM orders WHERE id = ?').bind(orderId).first<Order>();
 	return updated ?? null;
 }
+
+export type OrderWithUserInfo = OrderWithItems & {
+	user_name: string | null;
+	user_email: string;
+};
+
+export async function getAllOrdersWithUserInfo(): Promise<OrderWithUserInfo[]> {
+	const db = getDb();
+	
+	// Get all orders with user info
+	const ordersStmt = db.prepare(`
+		SELECT o.*, u.name as user_name, u.email as user_email
+		FROM orders o
+		JOIN users u ON o.user_id = u.id
+		ORDER BY o.created_at DESC
+	`);
+	const ordersRows = await ordersStmt.all<Order & { user_name: string | null; user_email: string }>();
+	const orders = ordersRows.results || [];
+	
+	// Get order items and shipping addresses for each order
+	const ordersWithItems: OrderWithUserInfo[] = [];
+	
+	for (const order of orders) {
+		// Get order items
+		const itemsStmt = db.prepare(`
+			SELECT oi.*, p.name as product_name
+			FROM order_items oi
+			JOIN products p ON oi.product_id = p.id
+			WHERE oi.order_id = ?
+			ORDER BY oi.id
+		`);
+		const itemsRows = await itemsStmt.bind(order.id).all<OrderItem & { product_name: string }>();
+		const items = itemsRows.results || [];
+		
+		// Get shipping address if exists
+		let shipping_address = null;
+		if (order.shipping_address_id) {
+			const addressStmt = db.prepare('SELECT * FROM shipping_addresses WHERE id = ?');
+			shipping_address = await addressStmt.bind(order.shipping_address_id).first<{
+				full_name: string;
+				address_line1: string;
+				address_line2: string | null;
+				city: string;
+				state: string | null;
+				postal_code: string;
+				country: string;
+				phone: string | null;
+			}>();
+		}
+		
+		ordersWithItems.push({
+			...order,
+			items,
+			shipping_address
+		});
+	}
+	
+	return ordersWithItems;
+}

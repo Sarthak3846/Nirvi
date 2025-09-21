@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionByToken } from './lib/session';
+import { isUserAdmin } from './lib/admin';
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
@@ -7,6 +8,8 @@ export async function middleware(request: NextRequest) {
 	// Skip middleware for public routes
 	if (
 		pathname.startsWith('/api/auth/') ||
+		pathname.startsWith('/api/admin/create-admin') ||
+		pathname.startsWith('/api/admin/promote-user') ||
 		pathname.startsWith('/login') ||
 		pathname.startsWith('/signup') ||
 		pathname.startsWith('/_next/') ||
@@ -33,6 +36,14 @@ export async function middleware(request: NextRequest) {
 		const response = NextResponse.redirect(new URL('/login', request.url));
 		response.cookies.delete('session_token');
 		return response;
+	}
+
+	// Check admin routes
+	if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin/')) {
+		const isAdmin = await isUserAdmin(session.user_id);
+		if (!isAdmin) {
+			return NextResponse.redirect(new URL('/', request.url));
+		}
 	}
 
 	// Add user info to headers for API routes

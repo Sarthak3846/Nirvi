@@ -31,3 +31,18 @@ export async function findUserById(id: string): Promise<User | null> {
 	const row = await db.prepare('SELECT * FROM users WHERE id = ?').bind(id).first<User>();
 	return row ?? null;
 }
+
+export async function getAllUsers(): Promise<User[]> {
+	const db = getDb();
+	const stmt = db.prepare('SELECT * FROM users ORDER BY created_at DESC');
+	const rows = await stmt.all<User>();
+	return rows.results || [];
+}
+
+export async function updateUserRole(id: string, role: string): Promise<User | null> {
+	const db = getDb();
+	await db.prepare('UPDATE users SET role = ? WHERE id = ?').bind(role, id).run();
+	
+	const updated = await db.prepare('SELECT * FROM users WHERE id = ?').bind(id).first<User>();
+	return updated ?? null;
+}
