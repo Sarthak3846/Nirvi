@@ -11,6 +11,14 @@ interface User {
 	updated_at: string;
 }
 
+interface UsersResponse {
+	users: User[];
+}
+
+interface UpdateUserResponse {
+	user: User;
+}
+
 export default function UsersTab() {
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -28,7 +36,7 @@ export default function UsersTab() {
 			if (!response.ok) {
 				throw new Error('Failed to fetch users');
 			}
-			const data = await response.json();
+			const data = await response.json() as UsersResponse;
 			setUsers(data.users);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'An error occurred');
@@ -55,7 +63,7 @@ export default function UsersTab() {
 				throw new Error('Failed to update user role');
 			}
 
-			const data = await response.json();
+			const data = await response.json() as UpdateUserResponse;
 			setUsers(users.map(user => 
 				user.id === userId ? data.user : user
 			));

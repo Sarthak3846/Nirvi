@@ -2,6 +2,28 @@ import { NextRequest } from 'next/server';
 import { getAllProductsForAdmin, updateProduct, deleteProduct, createProduct, getAllCategories } from '../../../../repositories/products';
 import { isUserAdmin, createAdminResponse } from '../../../../lib/admin';
 
+interface CreateProductRequest {
+	name: string;
+	description?: string;
+	price: string;
+	stock: string;
+	category_id?: string;
+}
+
+interface UpdateProductRequest {
+	productId: string;
+	name?: string;
+	description?: string;
+	price?: number;
+	stock?: number;
+	category_id?: string;
+	active?: boolean;
+}
+
+interface DeleteProductRequest {
+	productId: string;
+}
+
 export async function GET(request: NextRequest) {
 	try {
 		const userId = request.headers.get('x-user-id');
@@ -35,13 +57,20 @@ export async function POST(request: NextRequest) {
 			return createAdminResponse('Admin access required');
 		}
 
-		const { name, description, price, stock, category_id } = await request.json();
+		const { name, description, price, stock, category_id } = await request.json() as CreateProductRequest;
 		
-		if (!name || price === undefined || stock === undefined) {
+		if (!name || !price || !stock) {
 			return createAdminResponse('Missing required fields: name, price, stock', 400);
 		}
 
-		if (price < 0 || stock < 0) {
+		const parsedPrice = parseFloat(price);
+		const parsedStock = parseInt(stock);
+
+		if (isNaN(parsedPrice) || isNaN(parsedStock)) {
+			return createAdminResponse('Price and stock must be valid numbers', 400);
+		}
+
+		if (parsedPrice < 0 || parsedStock < 0) {
 			return createAdminResponse('Price and stock must be non-negative', 400);
 		}
 
@@ -50,8 +79,8 @@ export async function POST(request: NextRequest) {
 			id: productId,
 			name,
 			description: description || null,
-			price: parseFloat(price),
-			stock: parseInt(stock),
+			price: parsedPrice,
+			stock: parsedStock,
 			category_id: category_id || null
 		});
 
@@ -74,7 +103,7 @@ export async function PATCH(request: NextRequest) {
 			return createAdminResponse('Admin access required');
 		}
 
-		const { productId, ...updates } = await request.json();
+		const { productId, ...updates } = await request.json() as UpdateProductRequest;
 		
 		if (!productId) {
 			return createAdminResponse('Missing required field: productId', 400);
@@ -112,7 +141,7 @@ export async function DELETE(request: NextRequest) {
 			return createAdminResponse('Admin access required');
 		}
 
-		const { productId } = await request.json();
+		const { productId } = await request.json() as DeleteProductRequest;
 		
 		if (!productId) {
 			return createAdminResponse('Missing required field: productId', 400);

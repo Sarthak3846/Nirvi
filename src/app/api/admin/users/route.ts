@@ -2,6 +2,11 @@ import { NextRequest } from 'next/server';
 import { getAllUsers, updateUserRole } from '../../../../repositories/users';
 import { isUserAdmin, createAdminResponse } from '../../../../lib/admin';
 
+interface UpdateUserRoleRequest {
+	targetUserId: string;
+	role: string;
+}
+
 export async function GET(request: NextRequest) {
 	try {
 		const userId = request.headers.get('x-user-id');
@@ -34,7 +39,7 @@ export async function PATCH(request: NextRequest) {
 			return createAdminResponse('Admin access required');
 		}
 
-		const { targetUserId, role } = await request.json();
+		const { targetUserId, role } = await request.json() as UpdateUserRoleRequest;
 		
 		if (!targetUserId || !role) {
 			return createAdminResponse('Missing required fields: targetUserId, role', 400);

@@ -35,6 +35,14 @@ interface Order {
 	shipping_address: ShippingAddress | null;
 }
 
+interface OrdersResponse {
+	orders: Order[];
+}
+
+interface UpdateOrderResponse {
+	order: Order;
+}
+
 export default function OrdersTab() {
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -53,7 +61,7 @@ export default function OrdersTab() {
 			if (!response.ok) {
 				throw new Error('Failed to fetch orders');
 			}
-			const data = await response.json();
+			const data = await response.json() as OrdersResponse;
 			setOrders(data.orders);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'An error occurred');
@@ -80,7 +88,7 @@ export default function OrdersTab() {
 				throw new Error('Failed to update order status');
 			}
 
-			const data = await response.json();
+			const data = await response.json() as UpdateOrderResponse;
 			setOrders(orders.map(order => 
 				order.id === orderId ? { ...order, status: data.order.status } : order
 			));

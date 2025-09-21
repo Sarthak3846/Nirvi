@@ -22,6 +22,19 @@ interface Category {
 	created_at: string;
 }
 
+interface ProductsResponse {
+	products: Product[];
+	categories: Category[];
+}
+
+interface CreateProductResponse {
+	product: Product;
+}
+
+interface UpdateProductResponse {
+	product: Product;
+}
+
 export default function ProductsTab() {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -48,7 +61,7 @@ export default function ProductsTab() {
 			if (!response.ok) {
 				throw new Error('Failed to fetch products');
 			}
-			const data = await response.json();
+			const data = await response.json() as ProductsResponse;
 			setProducts(data.products);
 			setCategories(data.categories);
 		} catch (err) {
@@ -78,7 +91,7 @@ export default function ProductsTab() {
 				throw new Error('Failed to create product');
 			}
 
-			const data = await response.json();
+			const data = await response.json() as CreateProductResponse;
 			setProducts([data.product, ...products]);
 			setFormData({ name: '', description: '', price: '', stock: '', category_id: '' });
 			setShowAddForm(false);
@@ -104,7 +117,7 @@ export default function ProductsTab() {
 				throw new Error('Failed to update product');
 			}
 
-			const data = await response.json();
+			const data = await response.json() as UpdateProductResponse;
 			setProducts(products.map(product => 
 				product.id === productId ? { ...product, ...data.product } : product
 			));

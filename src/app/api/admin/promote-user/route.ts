@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findUserByEmail, updateUserRole } from '../../../../repositories/users';
 
+interface PromoteUserRequest {
+	email: string;
+}
+
 export async function POST(request: NextRequest) {
 	try {
-		const { email } = await request.json();
+		const { email } = await request.json() as PromoteUserRequest;
 		
 		if (!email) {
 			return NextResponse.json({ error: 'Email is required' }, { status: 400 });

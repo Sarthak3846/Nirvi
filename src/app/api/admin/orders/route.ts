@@ -2,6 +2,11 @@ import { NextRequest } from 'next/server';
 import { getAllOrdersWithUserInfo, updateOrderStatus } from '../../../../repositories/orders';
 import { isUserAdmin, createAdminResponse } from '../../../../lib/admin';
 
+interface UpdateOrderStatusRequest {
+	orderId: string;
+	status: string;
+}
+
 export async function GET(request: NextRequest) {
 	try {
 		const userId = request.headers.get('x-user-id');
@@ -34,7 +39,7 @@ export async function PATCH(request: NextRequest) {
 			return createAdminResponse('Admin access required');
 		}
 
-		const { orderId, status } = await request.json();
+		const { orderId, status } = await request.json() as UpdateOrderStatusRequest;
 		
 		if (!orderId || !status) {
 			return createAdminResponse('Missing required fields: orderId, status', 400);

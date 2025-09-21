@@ -3,9 +3,15 @@ import { createUser, findUserByEmail } from '../../../../repositories/users';
 import { createPasswordAuth } from '../../../../repositories/authProviders';
 import { hashPassword } from '../../../../lib/crypto';
 
+interface CreateAdminRequest {
+	email: string;
+	password: string;
+	name?: string;
+}
+
 export async function POST(request: NextRequest) {
 	try {
-		const { email, password, name } = await request.json();
+		const { email, password, name } = await request.json() as CreateAdminRequest;
 		
 		if (!email || !password) {
 			return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
